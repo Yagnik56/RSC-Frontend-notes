@@ -1,52 +1,88 @@
-// VAR, LET & CONST Interview Questions
+// VAR, LET & CONST – Interview Notes
 
-// 3 types of scope global (var), function and block (let, const) scope
+// 3 types of scope: global, function, and block
+// var → function scoped (global if declared outside function)
+// let & const → block scoped
+
+// --------------------------------------------------
 // Question 1 : Variable Shadowing
 
 function test() {
   let a = "Hello";
 
   if (true) {
-    let a = "Hello"; // New value assigned
-    console.log(a);
+    let a = "Hi"; // Shadows outer 'a'
+    console.log(a); // Hi
   }
 
-  console.log(a);
+  console.log(a); // Hello
 }
 
 test();
 
-// Question 2 :  Illegal Shadowing
+// --------------------------------------------------
+// Question 2 : Illegal Shadowing
 
 function func() {
   var a = "Hello";
   let b = "Namaste";
 
   if (true) {
-    let a = "Hi"; // Legal Shadowing
-    var b = "Bye"; // Illegal Shadowing
-    console.log(a); // It will print 'GeeksforGeeks'
-    console.log(b); // It will print error
+    let a = "Hi";   // Legal shadowing (let shadows var)
+    var b = "Bye";  // ❌ Illegal shadowing (var cannot shadow let)
+    console.log(a);
+    console.log(b);
   }
 }
-test();
 
+func();
+
+// Illegal shadowing happens when 'var' tries to redeclare
+// a variable declared with let or const in the same scope chain
+
+// --------------------------------------------------
 // Question 3 : Hoisting
 
-console.log(a);
-
+console.log(a); // undefined
 var a = 10;
 
-// Question 4 : Temporal Dead Zone
+// 'var' declarations are hoisted and initialized with undefined
 
-console.log(a, b, c);
+// --------------------------------------------------
+// Question 4 : Temporal Dead Zone (TDZ)
+
+console.log(a); // undefined
+// console.log(b); // ReferenceError (TDZ)
+// console.log(c); // ReferenceError (TDZ)
 
 const c = 30;
 let b = 20;
 var a = 10;
 
-// var can be redeclared and updated but let and const can't be redeclared and cosnt can't be updated either in same scope.
-// JS execution context has two phases : Creation phase and execution phase.
-// In a creation phase, 3 things happen : it created a global / window object, it setups the memory space for variables and functions and assign these variables with undefined (only for var) and func are assigned with their whole function body.
-// In execution phase, code is executed line by line.
-// let and const are stored in a special place in memory called TDZ (temporal dead zone - time between creation and execution phase (they are in scope but not declared yet)) and they are not given default value of undefined. 
+// --------------------------------------------------
+// Key Differences
+
+// var can be redeclared and updated
+// let can be updated but not redeclared in the same scope
+// const can neither be redeclared nor updated
+
+// --------------------------------------------------
+// JavaScript Execution Context
+
+// JS execution context has two phases:
+
+// 1. Creation Phase
+// - Global object (window / globalThis) is created
+// - Memory is allocated for variables and functions
+// - var → initialized with undefined
+// - let & const → placed in TDZ (not initialized)
+// - Functions → fully hoisted
+
+// 2. Execution Phase
+// - Code runs line by line
+
+// --------------------------------------------------
+// Temporal Dead Zone (TDZ)
+
+// TDZ is the time between variable memory allocation
+// and its initialization where accessing it throws ReferenceError
