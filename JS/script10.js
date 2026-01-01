@@ -1,16 +1,33 @@
-// Debounce & Throttling Interview Question
+// DEBOUNCE & THROTTLING – Interview Notes
 
-// Question 1 :   Create a button UI and add debounce as follows =>
-//          --> Show "Button Pressed <X> Times" every time button is pressed
-//          --> Increase "Triggered <Y> Times" count after 800ms of debounce
+// --------------------------------------------------
+// Key Difference
+//
+// Debounce:
+// - Executes function AFTER a delay
+// - Resets timer on every event
+// - Best for search input, resize, typing
+//
+// Throttle:
+// - Executes function at MOST once per time interval
+// - Ignores events in between
+// - Best for scroll, resize, button spam
+
+// --------------------------------------------------
+// Question 1 : Debounce Example (using lodash)
+
+// UI:
+// - Show "Button Pressed X Times" on every click
+// - Increase "Triggered Y Times" after 800ms debounce
 
 const btn = document.querySelector(".increment_btn");
 const btnPress = document.querySelector(".increment_pressed");
 const count = document.querySelector(".increment_count");
 
-var triggerCount = 0;
-var pressedCount = 0;
+let triggerCount = 0;
+let pressedCount = 0;
 
+// Debounced function runs only after user stops clicking for 800ms
 const debouncedCount = _.debounce(() => {
   triggerCount += 1;
   count.innerHTML = triggerCount;
@@ -18,98 +35,96 @@ const debouncedCount = _.debounce(() => {
 
 btn.addEventListener("click", () => {
   btnPress.innerHTML = ++pressedCount;
-
   debouncedCount();
 });
 
+// --------------------------------------------------
+// Question 2 : Throttle Example (using lodash)
 
-// Question 2 : Create a button UI and add throttle as follows =>
-//          --> Show "Button Pressed <X> Times" every time button is pressed
-//          --> Increase "Triggered <Y> Times" count after 800ms of debounce
+// UI:
+// - Show "Button Pressed X Times" on every click
+// - Increase "Triggered Y Times" at most once every 1000ms
 
-const btn = document.querySelector(".increment_btn");
-const btnPress = document.querySelector(".increment_pressed");
-const count = document.querySelector(".increment_count");
+let triggerCount2 = 0;
+let pressedCount2 = 0;
 
-var triggerCount = 0
-var pressedCount = 0
-
-const start = new Date().getTime()
-
-var throttled = _.throttle(()=>{
-    triggerCount+=1
-    count.innerHTML=triggerCount
+const throttled = _.throttle(() => {
+  triggerCount2 += 1;
+  count.innerHTML = triggerCount2;
 }, 1000);
 
 btn.addEventListener("click", () => {
-    btnPress.innerHTML=pressedCount++
-    const now = new Date().getTime()
-    const seconds = (now-start)/1000
-    console.log(seconds.toFixed());
-    throttled()
+  btnPress.innerHTML = ++pressedCount2;
+  const now = new Date().getTime();
+  const seconds = (now-start)/1000
+  console.log(seconds.toFixed());
+  throttled();
 });
 
-
+// --------------------------------------------------
 // Question 3 : Debounce Polyfill
+// Creates a debounced version of a function
+// Function executes only after delay has passed
+// since the last call
 
-const btn = document.querySelector(".increment_btn");
-const btnPress = document.querySelector(".increment_pressed");
-const count = document.querySelector(".increment_count");
+const myDebounce = function (cb, delay) {
+  let timer;
 
-var triggerCount = 0;
-var pressedCount = 0;
+  return function (...args) {
+    // Clear previous timer
+    if (timer) clearTimeout(timer);
 
-const myDebounce = function (cb, d) {
-    let timer;
-    return function (...args) {
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(() => {
-        cb(...args);
-      }, d);
-    };
+    // Start a new timer
+    timer = setTimeout(() => {
+      cb(...args);
+    }, delay);
+  };
 };
 
-const debouncedCount = myDebounce(() => {
-    triggerCount += 1;
-    count.innerHTML = triggerCount;
-  }, 800);
+let triggerCount3 = 0;
+let pressedCount3 = 0;
+
+const debouncedFn = myDebounce(() => {
+  triggerCount3++;
+  count.innerHTML = triggerCount3;
+}, 800);
 
 btn.addEventListener("click", () => {
-  btnPress.innerHTML = ++pressedCount;
-  debouncedCount();
+  btnPress.innerHTML = ++pressedCount3;
+  debouncedFn();
 });
 
-
+// --------------------------------------------------
 // Question 4 : Throttle Polyfill
+// Ensures function executes at most once
+// within the given delay window
 
-const btn = document.querySelector(".increment_btn");
-const btnPress = document.querySelector(".increment_pressed");
-const count = document.querySelector(".increment_count");
+const myThrottle = function (cb, delay) {
+  let last = 0;
 
-var triggerCount = 0
-var pressedCount = 0
+  return function (...args) {
+    const now = Date.now();
 
-const start = new Date().getTime();
+    // If called before delay, ignore
+    if (now - last < delay) return;
 
-const myThrottle = function (cb, d) {
-    let last = 0;
-    return (...args) => {
-      let now = new Date().getTime();
-      if (now - last < d) return;
-      last = now;
-      return cb(...args);
-    };
+    last = now;
+    return cb(...args);
+  };
 };
 
-var throttled = _.throttle(()=>{
-    triggerCount+=1
-    count.innerHTML=triggerCount
+let triggerCount4 = 0;
+let pressedCount4 = 0;
+
+const throttledFn = myThrottle(() => {
+  triggerCount4++;
+  count.innerHTML = triggerCount4;
 }, 1000);
 
 btn.addEventListener("click", () => {
-    btnPress.innerHTML=pressedCount++
-    const now = new Date().getTime()
-    const seconds = (now-start)/1000
-    console.log(seconds.toFixed());
-    throttled()
+  btnPress.innerHTML = ++pressedCount4;
+  const now = new Date().getTime()
+  const seconds = (now-start)/1000
+  console.log(seconds.toFixed());
+  throttledFn();
 });

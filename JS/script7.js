@@ -1,164 +1,195 @@
-// THIS KEYWORD
+// THIS KEYWORD – Interview Notes
 
-// Question 1 : this keyword
+// --------------------------------------------------
+// Question 1 : this keyword (Global context)
 
-let a = 5
+// In browsers, `this` refers to the global object (window)
+// In Node.js, `this` at top level is an empty object
 
-console.log(this.a);
+let a = 5;
+console.log(this.a); 
+// Browser → undefined (because let does not attach to window)
+// var a = 5 would make this.a === 5
 
-
+// --------------------------------------------------
 // Question 2 : this inside Method
 
-let user = {
-    name: "Piyush",
-    age: 24,
-      getDetails() {
-          console.log(this.name)
-      }
+let user1 = {
+  name: "Piyush",
+  age: 24,
+  getDetails() {
+    // `this` refers to the object calling the method
+    console.log(this.name);
+  },
 };
-  
-user.getDetails(); 
 
+user1.getDetails(); // Piyush
 
-// Question 3 : nested object 
+// --------------------------------------------------
+// Question 3 : this inside nested object
 
-let user = {
-    name: "Piyush",
-    age: 24,
-      childObj:{
-          newName:"Roadside Coder",
-          getDetails() {
-              console.log(this.newName, "and" ,this.name)
-          }
-      }
+let user2 = {
+  name: "Piyush",
+  age: 24,
+  childObj: {
+    newName: "Roadside Coder",
+    getDetails() {
+      // `this` refers to childObj, not parent
+      console.log(this.newName, "and", this.name);
+    },
+  },
 };
-  
-user.childObj.getDetails(); 
 
+user2.childObj.getDetails(); 
+// Roadside Coder and undefined
 
-// Question 4 : Class & Constructor
+// --------------------------------------------------
+// Question 4 : this with Class & Constructor
 
-class user {
-    constructor(n){
-        this.name = n
-    }
-    getName(){
-        console.log(this.name);
-    }
+class User {
+  constructor(n) {
+    this.name = n; // `this` refers to the new instance
+  }
+
+  getName() {
+    console.log(this.name);
+  }
 }
 
-const User = new user("Piyush") 
-User.getName();
+const userObj = new User("Piyush");
+userObj.getName(); // Piyush
 
-
+// --------------------------------------------------
 // Question 5 : Output
 
-const user = {
-    firstName: 'Piyush!',
-    getName() {
-      const firstName = 'Piyush!';
-      return this.firstName;
-    }
+const user3 = {
+  firstName: "Piyush!",
+  getName() {
+    const firstName = "Local Name";
+    return this.firstName; // object property, not local variable
+  },
 };
 
-console.log(object.getMessage());
+console.log(user3.getName()); // Piyush!
 
-
-// Question 6 : What is the result of accessing its `ref`? Why?
+// --------------------------------------------------
+// Question 6 : What is the result of accessing ref? Why?
 
 function makeUser() {
-    return {
-      name: "John",
-      ref: this
-    };
+  return {
+    name: "John",
+    ref: this, // `this` refers to global object here
+  };
 }
-  
-let user = makeUser();
-  
-alert( user.ref.name ); // What's the result?
 
+let user4 = makeUser();
+console.log(user4.ref.name); 
+// undefined (or window.name if set)
 
-// Question 7 : What logs to console the following code snippet:
-
-const user = {
-    name: 'Piyush Agarwa;!',
-    logMessage() {
-      console.log(this.name); 
-    }
-};
-setTimeout(user.logMessage, 1000);
-
-
-// Question 8 : Output
-
-const user = {
-    name: 'Piyush',
-    greet() {
-      return `Hello, ${this.name}!`;
+// Fix:
+function makeUserFixed() {
+  return {
+    name: "John",
+    ref() {
+      return this;
     },
-    farewell: () => {
-      return `Goodbye, ${this.name}!`;
-    }
+  };
+}
+console.log(makeUserFixed().ref().name); // John
+
+// --------------------------------------------------
+// Question 7 : this lost in callback
+
+const user5 = {
+  name: "Piyush Agarwal",
+  logMessage() {
+    console.log(this.name);
+  },
 };
-console.log(user.greet());    
-console.log(user.farewell()); 
 
+setTimeout(user5.logMessage, 1000);
+// undefined (this lost)
 
-// Question 9 :
+// Fix using bind
+setTimeout(user5.logMessage.bind(user5), 1000);
+
+// --------------------------------------------------
+// Question 8 : Arrow function vs normal method
+
+const user6 = {
+  name: "Piyush",
+  greet() {
+    return `Hello, ${this.name}!`; // works
+  },
+  farewell: () => {
+    return `Goodbye, ${this.name}!`; // arrow has no own this
+  },
+};
+
+console.log(user6.greet());    // Hello, Piyush!
+console.log(user6.farewell()); // Goodbye, undefined!
+
+// --------------------------------------------------
+// Question 9 : Calculator object using this
 
 let calculator = {
-    sum() {
-      return this.a + this.b;
-    },
-  
-    mul() {
-      return this.a * this.b;
-    },
-  
-    read() {
-      this.a = +prompt('a?', 0);
-      this.b = +prompt('b?', 0);
-    }
+  sum() {
+    return this.a + this.b;
+  },
+
+  mul() {
+    return this.a * this.b;
+  },
+
+  read() {
+    this.a = 5;
+    this.b = 10;
+  },
 };
-  
+
 calculator.read();
-alert( calculator.sum() );
-alert( calculator.mul() );
+console.log(calculator.sum()); // 15
+console.log(calculator.mul()); // 50
 
-
+// --------------------------------------------------
 // Question 10 : Output
 
 var length = 4;
+
 function callback() {
-  console.log(this.length); // What is logged?
+  console.log(this.length);
 }
+
 const object = {
   length: 5,
   method(callback) {
-    callback();
-  }
+    callback(); // normal function call → global this
+  },
 };
-object.method(callback, 1, 2);
 
+object.method(callback); // 4
 
-// Question 11 : Implement this Code
+// --------------------------------------------------
+// Question 11 : Method chaining using this
 
-const result = calc.add(10).multiply(5).subtract(30).add(10)
-console.log(result.total);
-
-// My Answer
-var calc = {
+const calc = {
   total: 0,
+
   add(a) {
     this.total += a;
-    return this;
+    return this; // enables chaining
   },
+
   subtract(a) {
     this.total -= a;
     return this;
   },
+
   multiply(a) {
     this.total *= a;
     return this;
   },
 };
+
+const result = calc.add(10).multiply(5).subtract(30).add(10);
+console.log(result.total); // 30
