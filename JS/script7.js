@@ -7,7 +7,7 @@
 // In Node.js, `this` at top level is an empty object
 
 let a = 5;
-console.log(this.a); 
+console.log(this.a);
 // Browser → undefined (because let does not attach to window)
 // var a = 5 would make this.a === 5
 
@@ -40,7 +40,7 @@ let user2 = {
   },
 };
 
-user2.childObj.getDetails(); 
+user2.childObj.getDetails();
 // Roadside Coder and undefined
 
 // --------------------------------------------------
@@ -83,7 +83,7 @@ function makeUser() {
 }
 
 let user4 = makeUser();
-console.log(user4.ref.name); 
+console.log(user4.ref.name);
 // undefined (or window.name if set)
 
 // Fix:
@@ -126,7 +126,7 @@ const user6 = {
   },
 };
 
-console.log(user6.greet());    // Hello, Piyush!
+console.log(user6.greet()); // Hello, Piyush!
 console.log(user6.farewell()); // Goodbye, undefined!
 
 // --------------------------------------------------

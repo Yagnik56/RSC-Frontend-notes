@@ -28,8 +28,8 @@ function func() {
   let b = "Namaste";
 
   if (true) {
-    let a = "Hi";   // Legal shadowing (let shadows var)
-    var b = "Bye";  // ❌ Illegal shadowing (var cannot shadow let)
+    let a = "Hi"; // Legal shadowing (let shadows var)
+    var b = "Bye"; // ❌ Illegal shadowing (var cannot shadow let)
     console.log(a);
     console.log(b);
   }

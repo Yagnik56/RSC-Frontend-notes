@@ -128,7 +128,8 @@ fn(5, 6, 7, 8);
 // --------------------------------------------------
 // Question 7 : Spread & Rest Operator
 
-function multiply(...nums) { // Rest operator (must be last)
+function multiply(...nums) {
+  // Rest operator (must be last)
   console.log(nums[0] * nums[1]);
 }
 

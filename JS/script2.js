@@ -5,7 +5,7 @@
 
 const nums = [1, 2, 3, 4];
 
-const multiplyThree = nums.map((num, i, arr) => num * 3); 
+const multiplyThree = nums.map((num, i, arr) => num * 3);
 // callback can take value, index and array
 console.log(multiplyThree); // [3, 6, 9, 12]
 
@@ -83,19 +83,19 @@ console.log(names1);
 
 // Solution 2 : forEach()
 let names2 = [];
-students.forEach(student => {
+students.forEach((student) => {
   names2.push(student.name.toUpperCase());
 });
 console.log(names2);
 
 // Solution 3 : map()
-let names3 = students.map(stu => stu.name.toUpperCase());
+let names3 = students.map((stu) => stu.name.toUpperCase());
 console.log(names3);
 
 // --------------------------------------------------
 // Q2 - Get the details of students who scored more than 60 marks
 
-let above60 = students.filter(stu => stu.marks > 60);
+let above60 = students.filter((stu) => stu.marks > 60);
 console.log(above60);
 
 // --------------------------------------------------
@@ -103,7 +103,7 @@ console.log(above60);
 // and have rollNumber greater than 15
 
 let filteredStudents = students.filter(
-  stu => stu.marks > 60 && stu.rollNumber > 15
+  (stu) => stu.marks > 60 && stu.rollNumber > 15
 );
 console.log(filteredStudents);
 
@@ -117,8 +117,8 @@ console.log(totalMarks);
 // Q5 - Get only the names of students who scored more than 60 marks
 
 let namesAbove60 = students
-  .filter(stu => stu.marks > 60)
-  .map(stu => stu.name);
+  .filter((stu) => stu.marks > 60)
+  .map((stu) => stu.name);
 
 console.log(namesAbove60);
 
@@ -127,13 +127,13 @@ console.log(namesAbove60);
 // after adding 20 marks to those who scored less than 60
 
 let finalTotalMarks = students
-  .map(stu => {
+  .map((stu) => {
     if (stu.marks < 60) {
       return { ...stu, marks: stu.marks + 20 };
     }
     return stu;
   })
-  .filter(stu => stu.marks > 60)
+  .filter((stu) => stu.marks > 60)
   .reduce((acc, curr) => acc + curr.marks, 0);
 
 console.log(finalTotalMarks);

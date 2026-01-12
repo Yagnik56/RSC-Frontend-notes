@@ -189,3 +189,9 @@ pause(1000).then((res) => {
 // MicroTask -
 
 // resolved: 1.3
+
+// If a macrotask is already queued and the microtask does not exist yet (like a slow fetch), the macrotask will execute first. Microtasks do not “preempt” already-running or already-executed macrotasks.
+// Microtasks > macrotasks
+// Priority applies only at check time
+// Future microtasks do NOT delay current macrotasks
+// Fetch resolves later → its .then() runs later

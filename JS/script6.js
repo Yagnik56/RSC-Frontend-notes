@@ -57,7 +57,7 @@ let user2 = {
 };
 
 for (let key in user2) {
-  console.log(key);       // name, age
+  console.log(key); // name, age
   console.log(user2[key]); // values
 }
 
@@ -151,7 +151,7 @@ const shape = {
   perimeter: () => 2 * Math.PI * this.radius,
 };
 
-console.log(shape.diameter());  // 20
+console.log(shape.diameter()); // 20
 console.log(shape.perimeter()); // NaN (arrow function has no own this)
 
 // --------------------------------------------------
@@ -166,7 +166,9 @@ let user4 = {
   },
 };
 
-const { fullName: { firstName } } = user4;
+const {
+  fullName: { firstName },
+} = user4;
 console.log(firstName);
 
 // --------------------------------------------------
@@ -193,7 +195,7 @@ console.log(d1.greeting); // Hello
 // --------------------------------------------------
 // Question 13 : Output (Object comparison)
 
-console.log({ a: 1 } == { a: 1 });  // false
+console.log({ a: 1 } == { a: 1 }); // false
 console.log({ a: 1 } === { a: 1 }); // false
 // Objects are compared by reference, not value
 
@@ -216,10 +218,10 @@ const multiply = (x = { ...value }) => {
   console.log((x.number *= 2));
 };
 
-multiply();        // 20
-multiply();        // 20
-multiply(value);   // 20
-multiply(value);   // 40
+multiply(); // 20
+multiply(); // 20
+multiply(value); // 20
+multiply(value); // 40
 
 // --------------------------------------------------
 

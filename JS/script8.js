@@ -146,7 +146,7 @@ f2(); // John
 // Question 12 : Fix the code using bind()
 
 function checkPassword(success, failed) {
-  let password = prompt("Password?", '');
+  let password = prompt("Password?", "");
   if (password == "Roadside Coder") success();
   else failed();
 }
@@ -163,16 +163,13 @@ let userY = {
   },
 };
 
-checkPassword(
-  userY.loginSuccessful.bind(userY),
-  userY.loginFailed.bind(userY)
-);
+checkPassword(userY.loginSuccessful.bind(userY), userY.loginFailed.bind(userY));
 
 // --------------------------------------------------
 // Question 13 : Partial application using bind()
 
 function checkPassword2(ok, fail) {
-  let password = prompt("Password?", '');
+  let password = prompt("Password?", "");
   if (password == "Roadside Coder") ok();
   else fail();
 }
@@ -180,16 +177,11 @@ function checkPassword2(ok, fail) {
 let userZ = {
   name: "Piyush Agarwal",
   login(result) {
-    console.log(
-      this.name + (result ? " login successful" : " login failed")
-    );
+    console.log(this.name + (result ? " login successful" : " login failed"));
   },
 };
 
-checkPassword2(
-  userZ.login.bind(userZ, true),
-  userZ.login.bind(userZ, false)
-);
+checkPassword2(userZ.login.bind(userZ, true), userZ.login.bind(userZ, false));
 
 // --------------------------------------------------
 // Question 14 : Explicit binding with Arrow Function
@@ -212,7 +204,7 @@ var personC = {
 
 var personD = { age2: 24 };
 
-personC.getAgeArrow.call(personD); 
+personC.getAgeArrow.call(personD);
 // ❌ undefined
 // Reason:
 // - Arrow functions ignore call/apply/bind
@@ -221,7 +213,7 @@ personC.getAgeArrow.call(personD);
 // - So `this.age2` → undefined
 // - if we had `var age2 = 10` output would be 10
 
-personC.getAge.call(personD); 
+personC.getAge.call(personD);
 // ✅ 24
 // Reason:
 // - Normal function has its own `this`
@@ -232,25 +224,25 @@ personC.getAge.call(personD);
 // Question 15 : call() Polyfill
 
 let car1 = {
-    color: 'Red',
-    company: 'Ferrari',
-  };
-  
-  let car2 = {
-    color: 'Blue',
-    company: 'BMW',
-  };
-  
-  let car3 = {
-    color: 'White',
-    company: 'Mercedes',
-  };
-  
-  function purchaseCar(currency, price) {
-    console.log(
-      `I have purchased ${this.color} - ${this.company} car for ${currency}${price} `
-    );
+  color: "Red",
+  company: "Ferrari",
 };
+
+let car2 = {
+  color: "Blue",
+  company: "BMW",
+};
+
+let car3 = {
+  color: "White",
+  company: "Mercedes",
+};
+
+function purchaseCar(currency, price) {
+  console.log(
+    `I have purchased ${this.color} - ${this.company} car for ${currency}${price} `
+  );
+}
 
 Function.prototype.myCall = function (context = {}, ...args) {
   if (typeof this !== "function") {
@@ -260,7 +252,7 @@ Function.prototype.myCall = function (context = {}, ...args) {
   context.fn = this;
   context.fn(...args);
 };
-purchaseCar.myCall(car3, '₹', '60,00,000');
+purchaseCar.myCall(car3, "₹", "60,00,000");
 // --------------------------------------------------
 // Question 16 : apply() Polyfill
 
@@ -276,7 +268,7 @@ Function.prototype.myApply = function (context = {}, args = []) {
   context.fn = this;
   context.fn(...args);
 };
-purchaseCar.myApply(car2, ['₹', '50,00,000']);
+purchaseCar.myApply(car2, ["₹", "50,00,000"]);
 
 // --------------------------------------------------
 // Question 17 : bind() Polyfill
@@ -293,7 +285,7 @@ Function.prototype.myBind = function (context = {}, ...args) {
   };
 };
 
-const initPurchaseBmw = purchaseCar.myBind(car1, '₹', '1,00,00,000');
+const initPurchaseBmw = purchaseCar.myBind(car1, "₹", "1,00,00,000");
 initPurchaseBmw();
 
 // --------------------------------------------------

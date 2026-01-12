@@ -56,7 +56,7 @@ const throttled = _.throttle(() => {
 btn.addEventListener("click", () => {
   btnPress.innerHTML = ++pressedCount2;
   const now = new Date().getTime();
-  const seconds = (now-start)/1000
+  const seconds = (now - start) / 1000;
   console.log(seconds.toFixed());
   throttled();
 });
@@ -123,8 +123,8 @@ const throttledFn = myThrottle(() => {
 
 btn.addEventListener("click", () => {
   btnPress.innerHTML = ++pressedCount4;
-  const now = new Date().getTime()
-  const seconds = (now-start)/1000
+  const now = new Date().getTime();
+  const seconds = (now - start) / 1000;
   console.log(seconds.toFixed());
   throttledFn();
 });
