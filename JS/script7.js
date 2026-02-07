@@ -169,6 +169,8 @@ const object = {
 
 object.method(callback); // 4
 
+//if object.method(callback, 1, 2) and instead of callback() arguments[0]() then this will refer to the array and give 3 as length.
+
 // --------------------------------------------------
 // Question 11 : Method chaining using this
 

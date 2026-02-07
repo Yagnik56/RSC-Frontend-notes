@@ -3,7 +3,7 @@
 // --------------------------------------------------
 // Function declaration / definition / statement
 // Declared using the `function` keyword
-// Function declarations are hoisted
+// Function declarations are hoisted completely
 
 // Function expression
 // Assigned to a variable
@@ -83,10 +83,17 @@ function getScore() {
 getScore();
 
 // Q2 - var scope with setTimeout
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 5; i++) {//let works fine nd give 0,1,2,3,4
   setTimeout(function () {
     console.log(i); // prints 5 five times
   }, i * 1000);
+}
+
+// Fix (closure)
+for (var i = 0; i < 3; i++) {
+  ((i) => {
+    setTimeout(() => console.log(i), 1000);
+  })(i);
 }
 
 // --------------------------------------------------

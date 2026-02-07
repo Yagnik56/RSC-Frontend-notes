@@ -261,9 +261,10 @@ console.timeEnd("Second call");
 
 // Scope:
 // Determines where variables are accessible
-// (global, function, block)
+// (global, local(function, block))
 
-// Closure:
+// Closure: when fun in fun, inner fun is closer
 // When an inner function remembers and accesses
 // variables from its outer function even after
 // the outer function has finished execution
+// 3 kinda scope in closure, global, outer and local

@@ -203,7 +203,7 @@ console.log({ a: 1 } === { a: 1 }); // false
 // Question 14 : Output
 
 let person2 = { name: "Lydia" };
-const members = [person2];
+const members = [person2]; //referring to obj memory
 person2 = null;
 
 console.log(members);

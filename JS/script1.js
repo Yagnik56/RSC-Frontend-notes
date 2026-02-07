@@ -59,6 +59,25 @@ const c = 30;
 let b = 20;
 var a = 10;
 
+// Question 5: flatten nested array
+
+function flatten(arr) {
+  let result = [];
+
+  for (let item of arr) {
+    if (Array.isArray(item)) {
+      result.push(...flatten(item));
+    } else {
+      result.push(item);
+    }
+  }
+
+  return result;
+}
+
+flatten([1, [2, [3, 4]], 5]);
+// [1, 2, 3, 4, 5]
+
 // --------------------------------------------------
 // Key Differences
 

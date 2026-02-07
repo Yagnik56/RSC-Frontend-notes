@@ -1,13 +1,15 @@
-// PROMISES Interview Question
+// PROMISES – Interview Notes
+// Promise repents the eventual fulfillment (or failure) of an asynchronous operation and its resulting value.
 
-// synchronous vs asynchronous code
+// --------------------------------------------------
+// Synchronous vs Asynchronous Code
 
-//Synchronous code
+// Synchronous code
 console.log("start");
 console.log("Subscribe to Roadside Coder");
 console.log("stop");
 
-// Asynchronous code with setTimeout
+// Asynchronous (setTimeout)
 console.log("start");
 
 setTimeout(() => {
@@ -16,21 +18,24 @@ setTimeout(() => {
 
 console.log("stop");
 
-// Asnychronous Example
+// --------------------------------------------------
+// Async example (WRONG way)
+
 console.log("start");
 
 function importantAction(username) {
   setTimeout(() => {
-    return `Subscribe to ${username}`;
+    return `Subscribe to ${username}`; // ❌ return inside async
   }, 1000);
 }
 
 const message = importantAction("Roadside Coder");
-console.log(message);
+console.log(message); // undefined
 
 console.log("stop");
 
-// Callback
+// --------------------------------------------------
+// Callback (Correct async handling)
 
 console.log("start");
 
@@ -46,7 +51,8 @@ importantAction("Roadside Coder", (message) => {
 
 console.log("stop");
 
-// Callback Hell
+// --------------------------------------------------
+// Callback Hell (Pyramid of Doom)
 console.log("start");
 
 function importantAction(username, cb) {
@@ -67,19 +73,20 @@ function shareTheVideo(video, cb) {
   }, 1000);
 }
 
-const message = importantAction("Roadside Coder", (message) => {
+importantAction("Roadside Coder", (message) => {
   console.log(message);
-  likeTheVideo("Javascript Interview Questions", (action) => {
+  likeTheVideo("Like the Video", (action) => {
     console.log(action);
-    shareTheVideo("Javascript Interview Questions", (action) => {
-      console.log(action); // callbacks inside callback is called call back hell and structure is called pyramid of doom.
+    shareTheVideo("Share the video", (action) => {
+      console.log(action);
     });
   });
 });
 
 console.log("stop");
 
-// Promises
+// --------------------------------------------------
+// PROMISES
 
 console.log("start");
 
@@ -101,7 +108,8 @@ sub
 
 console.log("stop");
 
-// Rewriting Callbacks
+// --------------------------------------------------
+// Rewriting Callbacks using Promises
 
 console.log("start");
 
@@ -143,24 +151,26 @@ importantAction("Roadside Coder")
 
 console.log("stop");
 
-// Promise Chaining
+// --------------------------------------------------
+// Promise Chaining (Correct way)
 
 importantAction("Roadside Coder")
   .then((res) => {
     console.log(res);
-    return likeTheVideo("Javascript Interview Questions");
+    return likeTheVideo("Like Javascript Interview Questions");
   })
   .then((res) => {
     console.log(res);
-    return shareTheVideo("Javascript Interview Questions");
+    return shareTheVideo("Share Javascript Interview Questions");
   })
   .then((res) => {
     console.log(res);
   });
 
-// Promise Combinator
+// --------------------------------------------------
+// Promise Combinators
 
-// promise.all()
+// Promise.all → fails fast
 // run all the promise in parallel and return array of fulfilled promises but if one promise fails then fails all
 console.log("start");
 
@@ -178,7 +188,7 @@ Promise.all([
 
 console.log("stop");
 
-// promise.race()
+// Promise.race → first settled
 // this returns the first promise which get fulfilled whether it's resolved or rejected
 console.log("start");
 
@@ -196,7 +206,7 @@ Promise.race([
 
 console.log("stop");
 
-// promise.allSettled()
+// Promise.allSettled → always resolves
 // run all the promise in parallel like promise all and return array of fulfilled and rejected promises unlike promise all which fail all if one fail
 console.log("start");
 
@@ -214,7 +224,7 @@ Promise.allSettled([
 
 console.log("stop");
 
-// promise.any()
+// Promise.any → first fulfilled
 // this returns the first fulfilled promise ignoring all failed ones unless all fail then reject and give error
 console.log("start");
 
@@ -232,9 +242,10 @@ Promise.any([
 
 console.log("stop");
 
-// async & await
+// --------------------------------------------------
+// async / await
 
-const result = async () => {
+async function result() {
   try {
     const message1 = await importantAction("Roadside Coder");
     const message2 = await likeTheVideo("Javascript Interview Questions");
@@ -242,13 +253,14 @@ const result = async () => {
 
     console.log({ message1, message2, message3 });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
-};
+}
 
 result();
 
-// ----------> Interview Question
+// --------------------------------------------------
+// OUTPUT BASED QUESTIONS (KEY INTERVIEW AREA)
 
 // Question 1 : What is Output?
 
@@ -265,21 +277,25 @@ promise1.then((res) => {
 
 console.log("end");
 
+// Output: start 1 end 2
+
 // Question 2 : What is Output?
 
 console.log("start");
 
-const promise1 = new Promise((resolve, reject) => {
+const promise2 = new Promise((resolve, reject) => {
   console.log(1);
   resolve(2); // if no resolve then it won't go in then
   console.log(3);
 });
 
-promise1.then((res) => {
+promise2.then((res) => {
   console.log(res);
 });
 
 console.log("end");
+
+// Output: start 1 3 end 2
 
 // Question 3 : What is Output?
 
@@ -299,6 +315,10 @@ fn().then((res) => {
 
 console.log("end");
 
+// Output: start middle 1 end success
+
+// --------------------------------------------------
+// Promise rejection flow
 // Question 4 : What is Output?
 
 function job() {
@@ -307,10 +327,7 @@ function job() {
   });
 }
 
-let promise = job();
-
-promise
-
+job()
   .then(function () {
     console.log("Success 1");
   })
@@ -331,6 +348,10 @@ promise
     console.log("Success 4");
   });
 
+// Output: Error 1, Success 4
+
+// --------------------------------------------------
+// Promise resolution + catch recovery
 // Question 5 : What is Output?
 
 function job(state) {
@@ -343,11 +364,9 @@ function job(state) {
   });
 }
 
-let promise = job(true);
-
-promise
-  .then(function (data) {
-    console.log(data);
+job(true)
+  .then((res) => {
+    console.log(res);
 
     return job(false);
   })
@@ -417,7 +436,9 @@ promise
     console.log("Error:", data.message);
   });
 
-// Question 7 : Promises Chaining
+// --------------------------------------------------
+// Promise resolving promise
+// first promise resolves to text called "first", then second promise resolves to first promise and what we do is resolve the second promise output of which we have to pass in first promise then print the first promise output
 
 const firstPromise = new Promise((resolve, reject) => {
   resolve("First!");
@@ -428,6 +449,8 @@ const secondPromise = new Promise((resolve, reject) => {
 });
 
 secondPromise.then((res) => res).then((res) => console.log(res));
+
+// --------------------------------------------------
 
 // Question 8 : Rewrite this example code using `async/await`
 //  Instead of `.then/catch`
@@ -459,6 +482,7 @@ async function loadJson(url) {
 
 loadJson("https://javascript.info/no-such-user.json").catch(alert);
 
+// --------------------------------------------------
 // Question 9 : Solve Promise Recursively
 
 function importantAction(username) {
@@ -597,7 +621,7 @@ PromisePolyFill.all = (promises) => {
   let fulfilledPromises = [],
     result = [];
 
-  function executor(resolve, reject) {
+  return new Promise((resolve, reject) => {
     promises.forEach((promise, index) =>
       promise
         .then((val) => {
@@ -610,10 +634,119 @@ PromisePolyFill.all = (promises) => {
         })
         .catch((error) => {
           return reject(error);
-        })
+        }),
     );
-  }
-  return new PromisePolyFill(executor);
+  });
 };
 
-// what's finally add more details on this
+// --------------------------------------------------
+// PROMISE POLYFILL – IMPORTANT
+
+// ❌ First polyfill failed because:
+// - No async queue
+// - No chaining
+// - then() didn’t return a promise
+
+// ✅ Correct Promise Polyfill (Minimal)
+
+function PromisePolyFill(executor) {
+  let state = "PENDING";
+  let value;
+  let handlers = [];
+
+  const asyncRun = (fn) => queueMicrotask(fn);
+
+  function resolve(val) {
+    if (state !== "PENDING") return;
+    state = "FULFILLED";
+    value = val;
+    handlers.forEach(runHandler);
+  }
+
+  function reject(err) {
+    if (state !== "PENDING") return;
+    state = "REJECTED";
+    value = err;
+    handlers.forEach(runHandler);
+  }
+
+  function runHandler(handler) {
+    asyncRun(() => {
+      if (state === "FULFILLED") {
+        handler.onFulfilled(value);
+      } else {
+        handler.onRejected(value);
+      }
+    });
+  }
+
+  this.then = function (onFulfilled, onRejected) {
+    return new PromisePolyFill((resolveNext, rejectNext) => {
+      const handler = {
+        onFulfilled(val) {
+          try {
+            resolveNext(onFulfilled ? onFulfilled(val) : val);
+          } catch (e) {
+            rejectNext(e);
+          }
+        },
+        onRejected(err) {
+          try {
+            if (onRejected) resolveNext(onRejected(err));
+            else rejectNext(err);
+          } catch (e) {
+            rejectNext(e);
+          }
+        },
+      };
+
+      state === "PENDING"
+        ? handlers.push(handler)
+        : runHandler(handler);
+    });
+  };
+
+  this.catch = function (fn) {
+    return this.then(null, fn);
+  };
+
+  try {
+    executor(resolve, reject);
+  } catch (e) {
+    reject(e);
+  }
+}
+
+// --------------------------------------------------
+// Promise.all polyfill
+
+PromisePolyFill.all = function (promises) {
+  return new PromisePolyFill((resolve, reject) => {
+    let result = [];
+    let count = 0;
+
+    promises.forEach((p, i) => {
+      p.then((val) => {
+        result[i] = val;
+        count++;
+        if (count === promises.length) resolve(result);
+      }).catch(reject);
+    });
+  });
+};
+
+// --------------------------------------------------
+// Promise.finally explanation
+// finally() runs regardless of resolve or reject
+// does NOT receive value or error
+// used for cleanup
+
+Promise.prototype.finally = function (cb) {
+  return this.then(
+    (res) => Promise.resolve(cb()).then(() => res),
+    (err) => Promise.resolve(cb()).then(() => {
+      throw err;
+    })
+  );
+};
+

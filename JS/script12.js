@@ -1,51 +1,53 @@
-// Compose and Pipe
+// COMPOSE & PIPE – Interview Notes
+// Used to combine multiple functions into a single function
 
-const addFive = (num) => {
-  return num + 5;
-};
+// --------------------------------------------------
+// Sample functions
 
-const subtractTwo = (num) => {
-  return num - 2;
-};
+const addFive = (num) => num + 5;
+const subtractTwo = (num) => num - 2;
+const multiplyFour = (num) => num * 4;
 
-const multiplyFour = (num) => {
-  return num * 4;
-};
+// --------------------------------------------------
+// COMPOSE
+// compose(f, g, h)(x) → f(g(h(x)))
+// Functions execute from RIGHT → LEFT
 
-// Compose Implementation
 function compose(...fns) {
-  return function (init) {
-    // let result = init;
-    // for (let i = fns.length - 1; i >= 0; i--) {
-    //   result = fns[i](result);
-    // }
-
-    // return result;
-
-    return fns.reduceRight((acc, curr) => {
-      return curr(acc);
-    }, init);
+  return function (initialValue) {
+    return fns.reduceRight((acc, currFn) => {
+      return currFn(acc);
+    }, initialValue);
   };
 }
 
 const evaluate = compose(addFive, subtractTwo, multiplyFour);
+
+// Execution order:
+// multiplyFour(5) → 20
+// subtractTwo(20) → 18
+// addFive(18) → 23
+
 console.log(evaluate(5)); // 23
 
-// Pipe Implementation
+// --------------------------------------------------
+// PIPE
+// pipe(f, g, h)(x) → h(g(f(x)))
+// Functions execute from LEFT → RIGHT
+
 function pipe(...fns) {
-  return function (init) {
-    // let result = init;
-    // for (let i = fns.length - 1; i >= 0; i--) {
-    //   result = fns[i](result);
-    // }
-
-    // return result;
-
-    return fns.reduce((acc, curr) => {
-      return curr(acc);
-    }, init);
+  return function (initialValue) {
+    return fns.reduce((acc, currFn) => {
+      return currFn(acc);
+    }, initialValue);
   };
 }
 
 const evaluatePipe = pipe(addFive, subtractTwo, multiplyFour);
+
+// Execution order:
+// addFive(5) → 10
+// subtractTwo(10) → 8
+// multiplyFour(8) → 32
+
 console.log(evaluatePipe(5)); // 32

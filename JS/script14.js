@@ -1,69 +1,86 @@
-// Class and Constructors
+// CLASS & CONSTRUCTORS – Interview Notes
 
-// Creating your first class
-// class Teacher {
-//   constructor(name, channel, likes = 0) {
-//     this.name = name;
-//     this.channel = channel;
-//     this.videoLikes = likes;
-//   }
+// --------------------------------------------------
+// What is a Class?
+// A class is a blueprint for creating objects.
+// It defines properties and methods that objects will have.
 
-//   intro() {
-//     return `Hey, Its ${this.name}! Welcome to ${this.channel}`;
-//   }
+// --------------------------------------------------
+// Creating a Class
 
-//   like() {
-//     this.videoLikes++;
-//     return `Liked this video! Current likes: ${this.videoLikes}`;
-//   }
-// }
+class Teacher {
+  constructor(name, channel, likes = 0) {
+    // constructor runs automatically when object is created
+    this.name = name;
+    this.channel = channel;
+    this.videoLikes = likes;
+  }
 
-// const roadsidecoder = new Teacher("Piyush", "RoadsideCoder");
+  intro() {
+    // methods defined in class go on the prototype
+    return `Hey, it's ${this.name}! Welcome to ${this.channel}`;
+  }
 
-// Converting to Function Constructors
+  like() {
+    this.videoLikes++;
+    return `Liked this video! Current likes: ${this.videoLikes}`;
+  }
+}
 
-// function Teacher(name, channel, likes = 0) {
-//   this.name = name;
-//   this.channel = channel;
-//   this.videoLikes = likes;
-// }
+const roadsidecoder = new Teacher("Piyush", "RoadsideCoder");
 
-// Teacher.prototype.intro = function () {
-//   return `Hey, Its ${this.name}! Welcome to ${this.channel}`;
-// };
+// --------------------------------------------------
+// Converting Class to Function Constructor
+// (Classes are syntactic sugar over prototypes)
 
-// Teacher.prototype.like = function () {
-//   this.videoLikes++;
-//   return `Liked this video! Current likes: ${this.videoLikes}`;
-// };
+function TeacherFn(name, channel, likes = 0) {
+  this.name = name;
+  this.channel = channel;
+  this.videoLikes = likes;
+}
 
-// const roadsidecoder = new Teacher("Piyush", "RoadsideCoder");
+TeacherFn.prototype.intro = function () {
+  return `Hey, it's ${this.name}! Welcome to ${this.channel}`;
+};
 
-// Inheritance
-// class YouTubeTeacher extends Teacher {
-//   constructor(name, channel, likes, subscribers) {
-//     super(name, channel, likes);
-//     this.subscribers = subscribers;
-//   }
+TeacherFn.prototype.like = function () {
+  this.videoLikes++;
+  return `Liked this video! Current likes: ${this.videoLikes}`;
+};
 
-//   static paidCourse() {
-//     return new YouTubeTeacher("Piyush", "RoadsideCoder", 69, "90k");
-//   }
+const teacher2 = new TeacherFn("Piyush", "RoadsideCoder");
 
-//   subscribersCount() {
-//     return `${this.channel} has ${this.subscribers} subscribers.`;
-//   }
-// }
+// --------------------------------------------------
+// Inheritance using classes
 
-// const ytTeacher = YouTubeTeacher.paidCourse();
+class YouTubeTeacher extends Teacher {
+  constructor(name, channel, likes, subscribers) {
+    super(name, channel, likes); // calls parent constructor
+    this.subscribers = subscribers;
+  }
 
-// ----------- Interview Questions on Class and Constructors -----------
+  subscribersCount() {
+    return `${this.channel} has ${this.subscribers} subscribers`;
+  }
 
-// Question 1 - Explain the difference between a class and an object in JavaScript.
-// Answer: A class is a blueprint that defines the structure and behavior of objects.
-// Objects are instances of classes that possess properties and methods defined by the class.
+  // static methods belong to the class, not instances
+  static paidCourse() {
+    return new YouTubeTeacher("Piyush", "RoadsideCoder", 69, "90k");
+  }
+}
 
-// Question 2 - What’s the Output?
+const ytTeacher = YouTubeTeacher.paidCourse();
+
+// --------------------------------------------------
+// ----------- Interview Questions -----------
+
+// Question 1 : Class vs Object
+// Class → blueprint
+// Object → instance created from class
+
+// --------------------------------------------------
+// Question 2 : Output
+
 class Rectangle {
   constructor(width, height) {
     this.width = width;
@@ -75,35 +92,38 @@ class Rectangle {
   }
 }
 
-// const square = new Rectangle(5, 5);
-// const rect = new Rectangle(4, 6);
+const square = new Rectangle(5, 5);
+const rect = new Rectangle(4, 6);
 
-// console.log(square.area()); // 25
-// console.log(rect.area()); // 24
+console.log(square.area()); // 25
+console.log(rect.area());   // 24
 
-// Question 3 - How does inheritance work in JavaScript classes?
-// Answer: Inheritance in JavaScript classes is achieved using the extends keyword.
-// It allows a sub class(child class) to inherit properties and methods from a
-// super class (parent class).
+// --------------------------------------------------
+// Question 3 : How does inheritance work in JS?
+// Using `extends` keyword
+// Child class inherits properties and methods of parent
+// `super()` is used to call parent constructor
 
-// Question 4 - What’s the Output?
-// class Employee {
-//    constructor() {
-//      this.name = "John";
-//    }
-//    constructor() {
-//      this.age = 30;
-//    }
-//  }
+// --------------------------------------------------
+// Question 4 : Output (Important)
 
-//  var employeeObject = new Employee();
+class Employee {
+  constructor() {
+    this.name = "John";
+  }
 
-// console.log(employeeObject.name);
+  // ❌ Invalid – classes can have only ONE constructor
+  // constructor() {
+  //   this.age = 30;
+  // }
+}
 
-// Solution - Uncaught SyntaxError: A class may only have one constructor
+// Uncaught SyntaxError: A class may only have one constructor
 
-// Question 5 - Which approach is better and why?
+// --------------------------------------------------
+// Question 5 : Which approach is better?
 
+// Object literal
 const jamesbond = {
   firstName: "Roadside",
   lastName: "Coder",
@@ -114,8 +134,7 @@ const jamesbond = {
 
 jamesbond.getFullName();
 
-// or
-
+// Class + prototype approach
 class Person {
   constructor(firstName, lastName) {
     this.firstName = firstName;
@@ -130,13 +149,19 @@ Person.prototype.getFullName = function () {
 const jamesBond = new Person("Roadside", "Coder");
 jamesBond.getFullName();
 
-// Solution -
+// ✅ Better approach:
+// Second approach is better since in the first approach, a closure is maintained
 // Second approach is better since in the first approach, a closure is maintained
 // for each copy of the object containing getFullName method.While in the second approach,
 // the method is registered in the prototype rather than in every object.
 // Thus, it is a more memory efficient approach.
 
-// Question 6 - Implement this -
+// --------------------------------------------------
+// Methods live on prototype, not recreated per object
+// More memory efficient and scalable
+
+// --------------------------------------------------
+// Question 6 : Method Chaining using Class
 
 class Calculator {
   constructor() {
@@ -145,7 +170,7 @@ class Calculator {
 
   add(num) {
     this.result += num;
-    return this;
+    return this; // enables chaining
   }
 
   subtract(num) {
@@ -159,10 +184,10 @@ class Calculator {
   }
 
   divide(num) {
-    if (num != 0) {
-      this.result /= num;
+    if (num === 0) {
+      console.log("Cannot divide by 0");
     } else {
-      console.log("Cannot divite by 0");
+      this.result /= num;
     }
     return this;
   }
@@ -174,9 +199,10 @@ class Calculator {
 
 const calc = new Calculator();
 const result = calc.add(10).subtract(5).multiply(2).divide(4).getResult();
-// console.log(result); // 2.5
+console.log(result); // 2.5
 
-// Question 7 - Inheritance and Polymorphism
+// --------------------------------------------------
+// Question 7 : Inheritance & Polymorphism
 // Implement a `Shape` class with an `area()` method.
 // Create subclasses `Circle` and `Square` that inherit from `Shape` and override the
 // `area()` method to calculate their respective areas.
@@ -194,7 +220,7 @@ class Circle extends Shape {
   }
 
   area() {
-    return Math.PI * this.radius ** 2;
+    return Math.PI * this.radius ** 2; // overridden method
   }
 }
 
@@ -205,25 +231,27 @@ class Square extends Shape {
   }
 
   area() {
-    return this.side ** 2;
+    return this.side ** 2; // overridden method
   }
 }
 
 const circle = new Circle(5);
-const square = new Square(4);
+const square2 = new Square(4);
 
-// console.log(circle.area());
-// console.log(square.area());
+console.log(circle.area());
+console.log(square2.area());
 
-// Question 8 - What are Getters and Setters in JS?
+// --------------------------------------------------
+// Question 8 : Getters and Setters
 
-// Getters and setters are methods used to control access to the properties of a class.
+// Used to control access to object properties
+// Helpful for validation and encapsulation
 
-class Teacher {
-  constructor(name, channel, likes = 0) {
+class TeacherWithAccessors {
+  constructor(name, channel) {
     this.name = name;
     this.channel = channel;
-    this._videoLikes = 0;
+    this._videoLikes = 0; // convention for private variable
   }
 
   intro() {
@@ -240,9 +268,13 @@ class Teacher {
   }
 
   set videoLikes(likes) {
-    if (likes < 0) throw new Error("Must be more than 0");
-    else this._videoLikes = likes;
+    if (likes < 0) {
+      throw new Error("Likes must be >= 0");
+    }
+    this._videoLikes = likes;
   }
 }
 
-const roadsidecoder = new Teacher("Piyush", "RoadsideCoder");
+const teacher = new TeacherWithAccessors("Piyush", "RoadsideCoder");
+teacher.videoLikes = 10;
+console.log(teacher.videoLikes);
