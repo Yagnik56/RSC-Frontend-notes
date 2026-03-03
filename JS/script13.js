@@ -201,19 +201,24 @@ console.log(obj3.foo); // 30
 // Q7: Deep Clone using recursion (Prototype-safe)
 
 // Handles nested objects & arrays
-function deepClone(obj) {
+// Uses WeakMap to handle circular references
+function deepClone(obj, map = new WeakMap()) {
   // Primitive or null
   if (obj === null || typeof obj !== "object") {
     return obj;
   }
 
+  if (map.has(obj)) { return map.get(obj); }
+
   // Create a new object or array based on the type of the input object
   var clone = Array.isArray(obj) ? [] : {};
+
+  map.set(obj, clone);
 
   // Iterate through each key in the input object
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
-      clone[key] = deepClone(obj[key]);
+      clone[key] = deepClone(obj[key], map);
     }
   }
 

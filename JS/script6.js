@@ -61,6 +61,11 @@ for (let key in user2) {
   console.log(user2[key]); // values
 }
 
+// for...in iterates over object keys or array indexes,
+// while for...of iterates over values of iterable objects like arrays, strings, maps, and sets.
+// For arrays, for...of is preferred because it directly returns values and avoids iterating over inherited
+// or custom properties. For object keys, for...in or Object.keys() is commonly used.
+
 // --------------------------------------------------
 // Question 2 : Output
 
@@ -266,3 +271,18 @@ const deepClone2 = structuredClone(objOriginal);
 
 // Method 3 : Using lodash (deep clone utility)
 // const deepClone3 = _.cloneDeep(objOriginal);
+
+// Object Flatten (Very Frontend Relevant)
+function flattenObject(obj, parent = "", res = {}) {
+  for (let key in obj) {
+    const newKey = parent ? `${parent}.${key}` : key;
+
+    if (typeof obj[key] === "object" && obj[key] !== null) {
+      flattenObject(obj[key], newKey, res);
+    } else {
+      res[newKey] = obj[key];
+    }
+  }
+
+  return res;
+}

@@ -29,9 +29,15 @@ function func() {
 
   if (true) {
     let a = "Hi"; // Legal shadowing (let shadows var)
-    var b = "Bye"; // ❌ Illegal shadowing (var cannot shadow let)
+    var b = "Bye"; // ❌ Illegal shadowing (var cannot shadow let) in same func scope
     console.log(a);
     console.log(b);
+  }
+
+  function inner() {
+    var b = "Hola"; // Legal shadowing (function scope allows var to shadow let)
+
+    console.log(a);
   }
 }
 

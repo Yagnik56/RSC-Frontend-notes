@@ -1,5 +1,9 @@
 // MAP, FILTER & REDUCE – Interview Notes
 
+// For loop through object, array, string
+// in  → keys (property names)
+// of  → values (iterables)
+
 // --------------------------------------------------
 // Question 1 : Array.map()
 
