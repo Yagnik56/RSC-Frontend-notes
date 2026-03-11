@@ -1,6 +1,153 @@
 // VAR, LET & CONST – Interview Notes
 
-// 3 types of scope: global, function, and block
+// What is Scope?
+
+// Scope in JavaScript determines where a variable or function
+// is accessible in the code.
+
+// It defines the lifetime and visibility of variables.
+
+// Think of scope as:
+// "Where can I use this variable?"
+// "Where does it live?"
+
+
+// --------------------------------------------------
+// Types of Scope in JavaScript
+// --------------------------------------------------
+
+// 1. Global Scope
+
+// Variables declared outside any function or block.
+// Accessible from anywhere in the program.
+
+var globalVar = "I am global";
+
+function testGlobal() {
+  console.log(globalVar); // ✅ accessible
+}
+
+testGlobal();
+console.log(globalVar); // ✅ accessible
+
+
+
+// --------------------------------------------------
+// 2. Function Scope
+// --------------------------------------------------
+
+// Variables declared inside a function are accessible
+// only within that function.
+
+function example() {
+  var x = 10;
+  console.log(x); // ✅ 10
+}
+
+example();
+// console.log(x); ❌ ReferenceError
+
+// In JavaScript, functions create their own scope.
+
+
+// --------------------------------------------------
+// 3. Block Scope (ES6)
+// --------------------------------------------------
+
+// Variables declared with let or const inside { }
+// exist only within that block.
+
+if (true) {
+  let a = 5;
+  const b = 10;
+  var c = 15;
+
+  console.log(a, b, c); // ✅ 5, 10, 15
+}
+
+console.log(c); // ✅ var leaks outside block
+// console.log(a); ❌ ReferenceError
+// console.log(b); ❌ ReferenceError
+
+// var → function scoped
+// let & const → block scoped
+
+
+// --------------------------------------------------
+// 4. Lexical Scope (Static Scope)
+// --------------------------------------------------
+
+// Inner functions can access variables from
+// their parent scope.
+
+function outer() {
+  let outerVar = "I am from outer scope";
+
+  function inner() {
+    console.log(outerVar); // ✅ accessible
+  }
+
+  inner();
+}
+
+outer();
+
+
+// --------------------------------------------------
+// 5. Module Scope (ES6 Modules)
+// --------------------------------------------------
+
+// Variables declared in a module file are scoped
+// to that module unless exported.
+
+// file1.js
+const secret = "hidden";
+export const name = "Yash";
+
+// file2.js
+// import { name } from "./file1.js";
+// console.log(name); // ✅
+// console.log(secret); // ❌
+
+
+// --------------------------------------------------
+// Scope Chain
+// --------------------------------------------------
+
+// When accessing a variable, JavaScript searches:
+
+// 1. Current scope
+// 2. Parent scope
+// 3. Global scope
+
+var globalValue = "global";
+
+function outerScope() {
+  let outerValue = "outer";
+
+  function innerScope() {
+    let innerValue = "inner";
+
+    console.log(innerValue); // inner
+    console.log(outerValue); // outer
+    console.log(globalValue); // global
+  }
+
+  innerScope();
+}
+
+outerScope();
+
+// --------------------------------------------------
+// Key Scope Takeaways
+// --------------------------------------------------
+
+// Global Scope → accessible everywhere
+// Function Scope → variables live inside function
+// Block Scope → let & const live inside {}
+// Lexical Scope → child functions access parent variables
+// Scope Chain → JS searches outward until variable found
+
 // var → function scoped (global if declared outside function)
 // let & const → block scoped
 
@@ -19,6 +166,14 @@ function test() {
 }
 
 test();
+
+// hoisting
+// What is Hoisting in JavaScript?
+
+// Hoisting is JavaScript’s default behaviour of moving declarations (not initializations) to the top of their scope before the code is executed.
+// In simple terms:
+// Variables and functions are “hoisted” (lifted) to the top of their scope (global or function).
+// Only declarations are hoisted, not assignments (values).
 
 // --------------------------------------------------
 // Question 2 : Illegal Shadowing
