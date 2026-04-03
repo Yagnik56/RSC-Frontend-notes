@@ -250,7 +250,7 @@ Function.prototype.myCall = function (context = {}, ...args) {
   }
 
   context.fn = this;
-  context.fn(...args);
+  return context.fn(...args);
 };
 purchaseCar.myCall(car3, "₹", "60,00,000");
 // --------------------------------------------------
@@ -266,7 +266,7 @@ Function.prototype.myApply = function (context = {}, args = []) {
   }
 
   context.fn = this;
-  context.fn(...args);
+  return context.fn(...args);
 };
 purchaseCar.myApply(car2, ["₹", "50,00,000"]);
 

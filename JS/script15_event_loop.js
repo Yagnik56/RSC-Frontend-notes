@@ -99,7 +99,7 @@ in a single-threaded JavaScript environment.
   asynchronous behavior happens.
   The event loop is like a traffic controller in JavaScript that manages the execution of code.
   It ensures tasks are processed in an orderly manner, handling asynchronous operations
-  by continuously checking if there are pending tasks in queues(microtasks and macrotasks). 
+  by continuously checking if there are pending tasks in queues(microtasks and macrotasks).
 */
 
 // --------------------------------------------------
